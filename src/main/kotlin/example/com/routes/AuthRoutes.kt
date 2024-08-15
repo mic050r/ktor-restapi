@@ -25,7 +25,7 @@ fun Route.authRoutes() {
             transaction {
                 Users.insert {
                     it[name] = user.name
-                    it[age] = user.age
+                    it[email] = user.email
                     it[password] = user.password  // 비밀번호 저장
                 }
             }
@@ -39,7 +39,7 @@ fun Route.authRoutes() {
             // 데이터베이스에서 유저 조회
             val user = transaction {
                 Users.select { Users.name eq credentials.name }
-                    .map { User(it[Users.id], it[Users.name], it[Users.age], it[Users.password]) }
+                    .map { User(it[Users.id], it[Users.name], it[Users.email], it[Users.password]) }
                     .singleOrNull()
             }
 
@@ -59,7 +59,7 @@ fun Route.authRoutes() {
         get {
             val users = transaction {
                 Users.selectAll().map {
-                    UserResponse(it[Users.id], it[Users.name], it[Users.age])  // 비밀번호를 제외하고 응답
+                    UserResponse(it[Users.id], it[Users.name], it[Users.email])  // 비밀번호를 제외하고 응답
                 }
             }
             call.respond(users)
@@ -75,7 +75,7 @@ fun Route.authRoutes() {
 
             val user = transaction {
                 Users.select { Users.id eq id }
-                    .map { UserResponse(it[Users.id], it[Users.name], it[Users.age]) }
+                    .map { UserResponse(it[Users.id], it[Users.name], it[Users.email]) }
                     .singleOrNull()
             }
 
@@ -91,7 +91,7 @@ fun Route.authRoutes() {
     get {
         val users = transaction {
             Users.selectAll().map {
-                UserResponse(it[Users.id], it[Users.name], it[Users.age])  // 비밀번호를 제외하고 응답
+                UserResponse(it[Users.id], it[Users.name], it[Users.email])  // 비밀번호를 제외하고 응답
             }
         }
         call.respond(users)
@@ -107,7 +107,7 @@ fun Route.authRoutes() {
 
         val user = transaction {
             Users.select { Users.id eq id }
-                .map { UserResponse(it[Users.id], it[Users.name], it[Users.age]) }
+                .map { UserResponse(it[Users.id], it[Users.name], it[Users.email]) }
                 .singleOrNull()
         }
 

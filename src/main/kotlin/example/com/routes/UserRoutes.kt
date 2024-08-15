@@ -31,7 +31,7 @@ fun Route.userRoutes() {
             val updated = transaction {
                 Users.update({ Users.id eq id }) {
                     it[name] = user.name
-                    it[age] = user.age
+                    it[email] = user.email
                     it[password] = user.password  // 비밀번호 업데이트
                 }
             }
