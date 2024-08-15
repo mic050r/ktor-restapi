@@ -5,6 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.github.cdimascio.dotenv.dotenv
 import org.jetbrains.exposed.sql.Database
 
 fun main(args: Array<String>) {
@@ -23,11 +24,17 @@ fun Application.module() {
 }
 
 fun Application.configureDatabase() {
+    val dotenv = dotenv()
+
+    val dbUrl = dotenv["DB_URL"] ?: "jdbc:postgresql://localhost:5432/defaultdb"
+    val dbUser = dotenv["DB_USER"] ?: "defaultuser"
+    val dbPassword = dotenv["DB_PASSWORD"] ?: "defaultpassword"
+
     val hikariConfig = HikariConfig().apply {
-        jdbcUrl = "jdbc:postgresql://localhost:5432/test"
+        jdbcUrl = dbUrl
         driverClassName = "org.postgresql.Driver"
-        username = "mic050r"
-        password = "123456"
+        username = dbUser
+        password = dbPassword
         maximumPoolSize = 10
     }
 
@@ -35,7 +42,7 @@ fun Application.configureDatabase() {
         val dataSource = HikariDataSource(hikariConfig)
         Database.connect(dataSource)
         // 연결 성공 시 로그 출력
-        environment.log.info("Database connected successfully!")
+        environment.log.info("Database connected successfully! : $dbUrl")
     } catch (e: Exception) {
         // 연결 실패 시 오류 로그 출력
         environment.log.error("Database connection failed: ${e.message}")
