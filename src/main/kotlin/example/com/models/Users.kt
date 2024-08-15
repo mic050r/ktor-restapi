@@ -7,10 +7,12 @@ import kotlinx.serialization.Serializable
 object Users : Table() {
     val id = integer("id").autoIncrement()
     val name = varchar("name", 50)
-    val age = integer("age")
+    val email = varchar("email", 50)
+    val password = varchar("password", 64)  // 비밀번호 필드 추가
+
     override val primaryKey = PrimaryKey(id)
 }
 
 // 데이터 클래스 정의 (직렬화를 위해 Serializable 사용)
 @Serializable
-data class User(val id: Int? = null, val name: String, val age: Int)
+data class User(val id: Int? = null, val name: String, val email: String, val password: String)
