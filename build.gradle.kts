@@ -46,6 +46,10 @@ dependencies {
     // env
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.0")
 
+    implementation("io.ktor:ktor-server-auth:$logback_version") // Ktor 버전에 맞게 조정
+    implementation("io.ktor:ktor-server-auth-jwt:$logback_version")
+    implementation("com.auth0:java-jwt:4.2.1") // 최신 버전으로 조정
+
     implementation("com.h2database:h2:$h2_version")
     implementation("io.ktor:ktor-server-openapi")
     implementation("io.ktor:ktor-server-auth-jvm")
