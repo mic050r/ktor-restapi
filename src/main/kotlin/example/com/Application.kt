@@ -5,8 +5,11 @@ import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import example.com.models.Users
+import example.com.routes.authRoutes
 import example.com.routes.userRoutes
 import io.github.cdimascio.dotenv.dotenv
+import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -52,12 +55,16 @@ fun Application.configureDatabase() {
 
     // 데이터베이스 테이블 생성
     transaction {
-        SchemaUtils.create(UserService.Users)  // Users 테이블 생성
+        SchemaUtils.drop(Users)
+        SchemaUtils.create(Users)  // Users 테이블 생성
     }
 }
 
 fun Application.configureRouting() {
     routing {
-        userRoutes()  // 유저 관련 라우팅 추가
+        authenticate("auth-jwt") { // jwt 인증이 필요한 라우팅
+            userRoutes()  // 유저 관련 라우팅 추가
+        }
+        authRoutes() // 로그인, 회원가입 라우팅 추가
     }
 }
