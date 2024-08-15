@@ -43,6 +43,9 @@ dependencies {
     // HikariCP (커넥션 풀)
     implementation("com.zaxxer:HikariCP:5.0.1")
 
+    // env
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.0")
+
     implementation("com.h2database:h2:$h2_version")
     implementation("io.ktor:ktor-server-openapi")
     implementation("io.ktor:ktor-server-auth-jvm")
